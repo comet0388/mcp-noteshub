@@ -1,0 +1,33 @@
+# ===============================
+# MCP NotesHub - Full Environment
+# ===============================
+
+# --- Core framework ---
+fastapi==0.111.0
+uvicorn==0.30.1
+pydantic==2.8.2
+
+# --- Unstructured (document parsing) ---
+unstructured[local-inference,pdf,docx]==0.14.4
+pdfminer.six==20221105
+python-docx==1.1.2
+
+# --- Vector & AI pipeline ---
+langchain==1.0.3
+langchain-core==1.0.3
+langchain-community==0.4.1
+chromadb==1.3.3
+sentence-transformers==5.1.2
+openai==2.7.1
+
+# --- NLP / embeddings dependencies ---
+transformers>=4.37.2
+torch>=2.2.0
+numpy>=1.26.4
+scikit-learn>=1.4.2
+
+# --- Optional / quality-of-life tools ---
+tqdm>=4.66.1
+rich>=13.7.0
+python-multipart==0.0.9   # for file uploads (FastAPI)
+pathlib==1.0.1
