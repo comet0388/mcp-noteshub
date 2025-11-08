@@ -1,10 +1,17 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Request
 from utils.rag_helper import get_relevant_chunks
 from typing import Dict, Any
 import random
 
+# ---------------------------------------------------
+# 🚀 FastAPI App Initialization
+# ---------------------------------------------------
+app = FastAPI(
+    title="MCP NotesHub Server",
+    description="Backend for contextual note retrieval and quiz generation.",
+    version="2.0.0"
+)
 
-from fastapi import Request
 
 @app.post("/mcp")
 async def mcp_endpoint(request: Request):
@@ -60,15 +67,6 @@ async def mcp_endpoint(request: Request):
     # ---- Unsupported ----
     else:
         return {"id": req_id, "error": f"Unsupported method: {method}"}
-
-# ---------------------------------------------------
-# 🚀 FastAPI App Initialization
-# ---------------------------------------------------
-app = FastAPI(
-    title="MCP NotesHub Server",
-    description="Backend for contextual note retrieval and quiz generation.",
-    version="2.0.0"
-)
 
 # ---------------------------------------------------
 # 🧠 Global Cache
