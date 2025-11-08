@@ -3,6 +3,64 @@ from utils.rag_helper import get_relevant_chunks
 from typing import Dict, Any
 import random
 
+
+from fastapi import Request
+
+@app.post("/mcp")
+async def mcp_endpoint(request: Request):
+    """Handle MCP Streamable HTTP requests from Cursor."""
+    data = await request.json()
+    method = data.get("method")
+    req_id = data.get("id", 0)
+
+    # ---- Handle "tools/list" ----
+    if method == "tools/list":
+        return {
+            "id": req_id,
+            "result": {
+                "tools": [
+                    {"name": "query", "description": "Retrieve contextual note chunks"},
+                    {"name": "status", "description": "Show cache status"},
+                    {"name": "clear", "description": "Clear cache manually"},
+                    {"name": "stop", "description": "Stop active quiz session"}
+                ]
+            }
+        }
+
+    # ---- Handle "tools/call" ----
+    elif method == "tools/call":
+        params = data.get("params", {})
+        tool = params.get("name")
+        args = params.get("arguments", {})
+        import requests
+
+        try:
+            if tool == "query":
+                topic = args.get("topic", "")
+                r = requests.get(f"http://127.0.0.1:8000/tools/query", params={"topic": topic})
+                return {"id": req_id, "result": r.json()}
+
+            elif tool == "status":
+                r = requests.get(f"http://127.0.0.1:8000/tools/status")
+                return {"id": req_id, "result": r.json()}
+
+            elif tool == "clear":
+                r = requests.get(f"http://127.0.0.1:8000/tools/clear")
+                return {"id": req_id, "result": r.json()}
+
+            elif tool == "stop":
+                r = requests.get(f"http://127.0.0.1:8000/tools/stop")
+                return {"id": req_id, "result": r.json()}
+
+            else:
+                return {"id": req_id, "error": f"Unknown tool: {tool}"}
+        except Exception as e:
+            return {"id": req_id, "error": str(e)}
+
+    # ---- Unsupported ----
+    else:
+        return {"id": req_id, "error": f"Unsupported method: {method}"}
+
 # ---------------------------------------------------
 # 🚀 FastAPI App Initialization
 # ---------------------------------------------------
