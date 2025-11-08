@@ -1,18 +1,31 @@
 {
-  "schema_version": "v1",
-  "name_for_human": "MCP NotesHub",
-  "name_for_model": "mcp_noteshub",
-  "description_for_human": "Retrieves note chunks and context for quiz generation.",
-  "description_for_model": "A retrieval tool that provides contextual note chunks from user study materials for AI quiz generation.",
-  "api": {
-    "type": "openapi",
-    "url": "http://localhost:8000/openapi.json",
-    "is_user_authenticated": false
-  },
-  "auth": {
-    "type": "none"
-  },
-  "logo_url": "https://cdn-icons-png.flaticon.com/512/3112/3112928.png",
+  "schema_version": "1.0",
+  "name": "MCP NotesHub",
+  "description": "Context-aware note retrieval and quiz generation tool.",
   "contact_email": "support@mcpnoteshub.local",
-  "legal_info_url": "https://example.com/terms"
+  "api": {
+    "url": "http://127.0.0.1:8000"
+  },
+  "endpoints": [
+    {
+      "path": "/tools/query",
+      "method": "GET",
+      "description": "Retrieve contextual note chunks based on file/topic."
+    },
+    {
+      "path": "/tools/status",
+      "method": "GET",
+      "description": "Show current cache contents for debugging."
+    },
+    {
+      "path": "/tools/clear",
+      "method": "GET",
+      "description": "Manually clear cached note sessions."
+    },
+    {
+      "path": "/tools/stop",
+      "method": "GET",
+      "description": "Stop an active quiz session and clear cache."
+    }
+  ]
 }
